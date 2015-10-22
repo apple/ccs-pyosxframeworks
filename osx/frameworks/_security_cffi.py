@@ -24,8 +24,47 @@ EXTRA_LINKS = []
 TYPES = """
 
 // SecBase.h
+typedef struct OpaqueSecKeyRef *SecKeyRef;
 typedef struct OpaqueSecCertificateRef *SecCertificateRef;
 typedef struct OpaqueSecIdentityRef *SecIdentityRef;
+typedef struct OpaqueSecKeychainRef *SecKeychainRef;
+
+// SecImportExport.h
+typedef enum
+{
+    kSecFormatUnknown = 0,
+    kSecFormatOpenSSL,
+    kSecFormatSSH,
+    kSecFormatBSAFE,
+    kSecFormatRawKey,
+    kSecFormatWrappedPKCS8,
+    kSecFormatWrappedOpenSSL,
+    kSecFormatWrappedSSH,
+    kSecFormatWrappedLSH,
+    kSecFormatX509Cert,
+    kSecFormatPEMSequence,
+    kSecFormatPKCS7,
+    kSecFormatPKCS12,
+    kSecFormatNetscapeCertSequence,
+    kSecFormatSSHv2
+} SecExternalFormat;
+
+typedef enum {
+    kSecItemTypeUnknown,
+    kSecItemTypePrivateKey,
+    kSecItemTypePublicKey,
+    kSecItemTypeSessionKey,
+    kSecItemTypeCertificate,
+    kSecItemTypeAggregate
+} SecExternalItemType;
+
+typedef enum SecItemImportExportFlags
+{
+    kSecItemPemArmour            = 0x00000001,
+} SecItemImportExportFlags;
+
+struct _SecItemImportExportKeyParameters;
+typedef struct _SecItemImportExportKeyParameters SecItemImportExportKeyParameters;
 
 // SecureTransport.h
 typedef enum
@@ -41,18 +80,16 @@ typedef enum
 } SSLConnectionType;
 
 typedef enum {
-    kSSLProtocolUnknown = 0,                /* no protocol negotiated/specified; use default */
-    kSSLProtocol3       = 2,                /* SSL 3.0 */
-    kTLSProtocol1       = 4,                /* TLS 1.0 */
-    kTLSProtocol11      = 7,                /* TLS 1.1 */
-    kTLSProtocol12      = 8,                /* TLS 1.2 */
-    kDTLSProtocol1      = 9,                /* DTLS 1.0 */
-
-    /* DEPRECATED on iOS */
-    kSSLProtocol2       = 1,                /* SSL 2.0 */
-    kSSLProtocol3Only   = 3,                /* SSL 3.0 Only */
-    kTLSProtocol1Only   = 5,                /* TLS 1.0 Only */
-    kSSLProtocolAll     = 6,                /* All TLS supported protocols */
+    kSSLProtocolUnknown = 0,
+    kSSLProtocol3       = 2,
+    kTLSProtocol1       = 4,
+    kTLSProtocol11      = 7,
+    kTLSProtocol12      = 8,
+    kDTLSProtocol1      = 9,
+    kSSLProtocol2       = 1,
+    kSSLProtocol3Only   = 3,
+    kTLSProtocol1Only   = 5,
+    kSSLProtocolAll     = 6,
 
 } SSLProtocol;
 
@@ -267,80 +304,92 @@ const CFStringRef kSecValueRef;
 const CFStringRef kSecValuePersistentRef;
 
 enum {
-    errSSLProtocol                = -9800,    /* SSL protocol error */
-    errSSLNegotiation            = -9801,    /* Cipher Suite negotiation failure */
-    errSSLFatalAlert            = -9802,    /* Fatal alert */
-    errSSLWouldBlock            = -9803,    /* I/O would block (not fatal) */
-    errSSLSessionNotFound         = -9804,    /* attempt to restore an unknown session */
-    errSSLClosedGraceful         = -9805,    /* connection closed gracefully */
-    errSSLClosedAbort             = -9806,    /* connection closed via error */
-    errSSLXCertChainInvalid     = -9807,    /* invalid certificate chain */
-    errSSLBadCert                = -9808,    /* bad certificate format */
-    errSSLCrypto                = -9809,    /* underlying cryptographic error */
-    errSSLInternal                = -9810,    /* Internal error */
-    errSSLModuleAttach            = -9811,    /* module attach failure */
-    errSSLUnknownRootCert        = -9812,    /* valid cert chain, untrusted root */
-    errSSLNoRootCert            = -9813,    /* cert chain not verified by root */
-    errSSLCertExpired            = -9814,    /* chain had an expired cert */
-    errSSLCertNotYetValid        = -9815,    /* chain had a cert not yet valid */
-    errSSLClosedNoNotify        = -9816,    /* server closed session with no notification */
-    errSSLBufferOverflow        = -9817,    /* insufficient buffer provided */
-    errSSLBadCipherSuite        = -9818,    /* bad SSLCipherSuite */
+    errSSLProtocol                = -9800,
+    errSSLNegotiation            = -9801,
+    errSSLFatalAlert            = -9802,
+    errSSLWouldBlock            = -9803,
+    errSSLSessionNotFound         = -9804,
+    errSSLClosedGraceful         = -9805,
+    errSSLClosedAbort             = -9806,
+    errSSLXCertChainInvalid     = -9807,
+    errSSLBadCert                = -9808,
+    errSSLCrypto                = -9809,
+    errSSLInternal                = -9810,
+    errSSLModuleAttach            = -9811,
+    errSSLUnknownRootCert        = -9812,
+    errSSLNoRootCert            = -9813,
+    errSSLCertExpired            = -9814,
+    errSSLCertNotYetValid        = -9815,
+    errSSLClosedNoNotify        = -9816,
+    errSSLBufferOverflow        = -9817,
+    errSSLBadCipherSuite        = -9818,
 
-    /* fatal errors detected by peer */
-    errSSLPeerUnexpectedMsg        = -9819,    /* unexpected message received */
-    errSSLPeerBadRecordMac        = -9820,    /* bad MAC */
-    errSSLPeerDecryptionFail    = -9821,    /* decryption failed */
-    errSSLPeerRecordOverflow    = -9822,    /* record overflow */
-    errSSLPeerDecompressFail    = -9823,    /* decompression failure */
-    errSSLPeerHandshakeFail        = -9824,    /* handshake failure */
-    errSSLPeerBadCert            = -9825,    /* misc. bad certificate */
-    errSSLPeerUnsupportedCert    = -9826,    /* bad unsupported cert format */
-    errSSLPeerCertRevoked        = -9827,    /* certificate revoked */
-    errSSLPeerCertExpired        = -9828,    /* certificate expired */
-    errSSLPeerCertUnknown        = -9829,    /* unknown certificate */
-    errSSLIllegalParam            = -9830,    /* illegal parameter */
-    errSSLPeerUnknownCA         = -9831,    /* unknown Cert Authority */
-    errSSLPeerAccessDenied        = -9832,    /* access denied */
-    errSSLPeerDecodeError        = -9833,    /* decoding error */
-    errSSLPeerDecryptError        = -9834,    /* decryption error */
-    errSSLPeerExportRestriction    = -9835,    /* export restriction */
-    errSSLPeerProtocolVersion    = -9836,    /* bad protocol version */
-    errSSLPeerInsufficientSecurity = -9837,    /* insufficient security */
-    errSSLPeerInternalError        = -9838,    /* internal error */
-    errSSLPeerUserCancelled        = -9839,    /* user canceled */
-    errSSLPeerNoRenegotiation    = -9840,    /* no renegotiation allowed */
+    errSSLPeerUnexpectedMsg        = -9819,
+    errSSLPeerBadRecordMac        = -9820,
+    errSSLPeerDecryptionFail    = -9821,
+    errSSLPeerRecordOverflow    = -9822,
+    errSSLPeerDecompressFail    = -9823,
+    errSSLPeerHandshakeFail        = -9824,
+    errSSLPeerBadCert            = -9825,
+    errSSLPeerUnsupportedCert    = -9826,
+    errSSLPeerCertRevoked        = -9827,
+    errSSLPeerCertExpired        = -9828,
+    errSSLPeerCertUnknown        = -9829,
+    errSSLIllegalParam            = -9830,
+    errSSLPeerUnknownCA         = -9831,
+    errSSLPeerAccessDenied        = -9832,
+    errSSLPeerDecodeError        = -9833,
+    errSSLPeerDecryptError        = -9834,
+    errSSLPeerExportRestriction    = -9835,
+    errSSLPeerProtocolVersion    = -9836,
+    errSSLPeerInsufficientSecurity = -9837,
+    errSSLPeerInternalError        = -9838,
+    errSSLPeerUserCancelled        = -9839,
+    errSSLPeerNoRenegotiation    = -9840,
 
-    /* non-fatal result codes */
-    errSSLPeerAuthCompleted     = -9841,    /* peer cert is valid, or was ignored if verification disabled */
-    errSSLClientCertRequested    = -9842,    /* server has requested a client cert */
+    errSSLPeerAuthCompleted     = -9841,
+    errSSLClientCertRequested    = -9842,
 
-    /* more errors detected by us */
-    errSSLHostNameMismatch        = -9843,    /* peer host name mismatch */
-    errSSLConnectionRefused        = -9844,    /* peer dropped connection before responding */
-    errSSLDecryptionFail        = -9845,    /* decryption failure */
-    errSSLBadRecordMac            = -9846,    /* bad MAC */
-    errSSLRecordOverflow        = -9847,    /* record overflow */
-    errSSLBadConfiguration        = -9848,    /* configuration error */
-    errSSLUnexpectedRecord      = -9849,    /* unexpected (skipped) record in DTLS */
-    errSSLWeakPeerEphemeralDHKey = -9850,    /* weak ephemeral dh key  */
+    errSSLHostNameMismatch        = -9843,
+    errSSLConnectionRefused        = -9844,
+    errSSLDecryptionFail        = -9845,
+    errSSLBadRecordMac            = -9846,
+    errSSLRecordOverflow        = -9847,
+    errSSLBadConfiguration        = -9848,
+    errSSLUnexpectedRecord      = -9849,
+    errSSLWeakPeerEphemeralDHKey = -9850,
 
-    /* non-fatal result codes */
-    errSSLClientHelloReceived   = -9851,    /* SNI */
+    errSSLClientHelloReceived   = -9851,
 };
 """
 
 FUNCTIONS = """
 
 // SecCertificate.h
+CFTypeID SecCertificateGetTypeID(void);
 SecCertificateRef SecCertificateCopyPreferred(CFStringRef name, CFArrayRef keyUsage);
 CFDictionaryRef SecCertificateCopyValues(SecCertificateRef certificate, CFArrayRef keys, CFErrorRef *error);
 
 // SecIdentity.h
 OSStatus SecIdentityCopyCertificate ( SecIdentityRef identityRef, SecCertificateRef *certificateRef );
+SecIdentityRef SecIdentityCopyPreferred ( CFStringRef name, CFArrayRef keyUsage, CFArrayRef validIssuers );
+
+// SecImportExport.h
+OSStatus SecItemImport(
+    CFDataRef                            importedData,
+    CFStringRef                fileNameOrExtension,
+    SecExternalFormat *      inputFormat,
+    SecExternalItemType    *    itemType,
+    SecItemImportExportFlags            flags,
+    const SecItemImportExportKeyParameters * keyParams,
+    SecKeychainRef            importKeychain,
+    CFArrayRef * outItems);
 
 // SecItem.h
 OSStatus SecItemCopyMatching ( CFDictionaryRef query, CFTypeRef *result );
+
+// SecKey.h
+CFTypeID SecKeyGetTypeID(void);
 
 // SecKeychain.h
 OSStatus SecKeychainSetUserInteractionAllowed ( Boolean state );
