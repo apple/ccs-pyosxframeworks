@@ -3,6 +3,29 @@ Getting Started
 
 This is a python library that wraps a number of useful OS X frameworks.
 
+Develop
+=======
+cffi wrappers for various frameworks live in the osx.frameworks modules. Run
+the osx._corefoundation_cffi_build module to create the osx._corefoundation.so
+module. That contains the cffi extension module for the wrappers. Each time
+changes are made to the wrapper modules, re-run the cffi build.
+
+The other modules in osx are Python objects that wrap various CoreFoundation
+objects to provide implicit CFRetain/CFRelease behavior and also simple
+data conversion APIs between the CF types and Python types. For example to
+turn a Python string "s" into a CFStringRef:
+
+	cfstr = CFStringRef.fromString(s)
+	
+The base Python CFObjectRef class assumes ownership of the underlying CF object
+and will always release it. If the CF object being passed in has not already been
+retained, then set the "owned" argument to False.
+
+Install
+=======
+
+python setup.py build
+
 
 Copyright and License
 =====================
