@@ -31,4 +31,5 @@ setup(
     ext_package="osx",
     ext_modules=[_corefoundation_cffi_build.ffi.distutils_extension()],
     setup_requires=["cffi>=1.3.0"],
+    install_requires=["cffi>=1.3.0"],
 )
