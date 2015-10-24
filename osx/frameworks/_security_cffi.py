@@ -66,6 +66,9 @@ typedef enum SecItemImportExportFlags
 struct _SecItemImportExportKeyParameters;
 typedef struct _SecItemImportExportKeyParameters SecItemImportExportKeyParameters;
 
+// SecTransform.h
+typedef CFTypeRef SecTransformRef;
+
 // SecureTransport.h
 typedef enum
 {
@@ -303,6 +306,14 @@ const CFStringRef kSecValueData;
 const CFStringRef kSecValueRef;
 const CFStringRef kSecValuePersistentRef;
 
+// SecTransform.h
+const CFStringRef kSecTransformInputAttributeName;
+const CFStringRef kSecTransformOutputAttributeName;
+const CFStringRef kSecTransformDebugAttributeName;
+const CFStringRef kSecTransformTransformName;
+const CFStringRef kSecTransformAbortAttributeName;
+
+// SecureTransport.h
 enum {
     errSSLProtocol                = -9800,
     errSSLNegotiation            = -9801,
@@ -372,6 +383,7 @@ CFDictionaryRef SecCertificateCopyValues(SecCertificateRef certificate, CFArrayR
 
 // SecIdentity.h
 OSStatus SecIdentityCopyCertificate ( SecIdentityRef identityRef, SecCertificateRef *certificateRef );
+OSStatus SecIdentityCopyPrivateKey ( SecIdentityRef identityRef, SecKeyRef *privateKeyRef );
 SecIdentityRef SecIdentityCopyPreferred ( CFStringRef name, CFArrayRef keyUsage, CFArrayRef validIssuers );
 
 // SecImportExport.h
@@ -393,6 +405,15 @@ CFTypeID SecKeyGetTypeID(void);
 
 // SecKeychain.h
 OSStatus SecKeychainSetUserInteractionAllowed ( Boolean state );
+
+// SecTransform.h
+SecTransformRef SecSignTransformCreate( SecKeyRef key, CFErrorRef *error ) ;
+Boolean SecTransformSetAttribute(SecTransformRef transformRef,
+                                CFStringRef key,
+                                CFTypeRef value,
+                                CFErrorRef *error);
+CFTypeRef SecTransformExecute(SecTransformRef transformRef, CFErrorRef* errorRef);
+
 
 // SecureTransport.h
 SSLContextRef

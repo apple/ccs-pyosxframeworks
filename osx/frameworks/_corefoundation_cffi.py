@@ -77,6 +77,8 @@ CFTypeID CFGetTypeID ( CFTypeRef cf );
 CFStringRef CFCopyDescription ( CFTypeRef cf );
 
 CFTypeID CFErrorGetTypeID ( void );
+CFIndex CFErrorGetCode ( CFErrorRef err );
+CFStringRef CFErrorCopyDescription ( CFErrorRef err );
 
 CFTypeID CFBooleanGetTypeID ( void );
 Boolean CFBooleanGetValue( CFBooleanRef );

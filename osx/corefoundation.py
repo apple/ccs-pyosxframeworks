@@ -121,14 +121,25 @@ class CFErrorRef(CFObjectRef):
         return cf.CFErrorGetTypeID()
 
 
-    def error(self):
+    def code(self):
         """
         Return the error description.
 
         @return: error description
         @rtype: L{str}
         """
-        desc = CFStringRef(cf)
+        code = cf.CFErrorGetCode(self.ref())
+        return code
+
+
+    def description(self):
+        """
+        Return the error description.
+
+        @return: error description
+        @rtype: L{str}
+        """
+        desc = CFStringRef(cf.CFErrorCopyDescription(self.ref()))
         return desc.toString()
 
 
