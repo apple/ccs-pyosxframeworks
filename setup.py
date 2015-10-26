@@ -58,7 +58,7 @@ setup(
         'osx.frameworks',
     ],
     ext_package="osx",
-    setup_requires=[],
+    setup_requires=["cffi>=1.1.0"],
     install_requires=["cffi>=1.1.0"],
     cmdclass={
         "build": LazyBuild,
