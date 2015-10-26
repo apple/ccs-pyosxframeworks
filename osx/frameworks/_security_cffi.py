@@ -368,9 +368,9 @@ enum {
     errSSLRecordOverflow        = -9847,
     errSSLBadConfiguration        = -9848,
     errSSLUnexpectedRecord      = -9849,
-    errSSLWeakPeerEphemeralDHKey = -9850,
+    // errSSLWeakPeerEphemeralDHKey = -9850, - not in 10.10.sdk
 
-    errSSLClientHelloReceived   = -9851,
+    // errSSLClientHelloReceived   = -9851, - not in 10.10.sdk
 };
 """
 
@@ -420,15 +420,16 @@ SSLContextRef
 SSLCreateContext(CFAllocatorRef alloc, SSLProtocolSide protocolSide, SSLConnectionType connectionType);
 
 OSStatus
-SSLSetProtocolVersionEnabled (SSLContextRef     context,
-                             SSLProtocol        protocol,
-                             Boolean            enable);
+SSLSetProtocolVersionMin  (SSLContextRef      context,
+                           SSLProtocol        minVersion);
+OSStatus
+SSLSetProtocolVersionMax  (SSLContextRef      context,
+                           SSLProtocol        maxVersion);
 
 OSStatus SSLSetConnection (SSLContextRef context, SSLConnectionRef connection);
 OSStatus SSLGetConnection (SSLContextRef context, SSLConnectionRef *connection);
 
 OSStatus SSLSetCertificate ( SSLContextRef context, CFArrayRef certRefs );
-OSStatus SSLCopyPeerCertificates ( SSLContextRef context, CFArrayRef *certs );
 
 OSStatus SSLSetIOFuncs ( SSLContextRef context, SSLReadFunc readFunc, SSLWriteFunc writeFunc );
 
