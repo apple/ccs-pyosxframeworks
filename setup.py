@@ -14,9 +14,9 @@
 # limitations under the License.
 ##
 
-from distutils.core import setup
+from setuptools import setup
 from distutils.command.build import build
-from distutils.command.install import install
+from setuptools.command.install import install
 
 
 # pip imports setup.py prior to doing the actual build and install so it can
