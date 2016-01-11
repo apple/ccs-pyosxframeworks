@@ -28,6 +28,7 @@ typedef struct OpaqueSecKeyRef *SecKeyRef;
 typedef struct OpaqueSecCertificateRef *SecCertificateRef;
 typedef struct OpaqueSecIdentityRef *SecIdentityRef;
 typedef struct OpaqueSecKeychainRef *SecKeychainRef;
+typedef struct OpaqueSecPolicyRef *SecPolicyRef;
 
 // SecImportExport.h
 typedef enum
@@ -102,6 +103,9 @@ typedef const void *SSLConnectionRef;
 
 typedef OSStatus (*SSLReadFunc) ( SSLConnectionRef connection, void *data, size_t *dataLength );
 typedef OSStatus (*SSLWriteFunc) ( SSLConnectionRef connection, const void *data, size_t *dataLength );
+
+// SecTrust.h
+typedef struct __SecTrust *SecTrustRef;
 """
 
 CONSTANTS = """
@@ -405,6 +409,11 @@ CFTypeID SecKeyGetTypeID(void);
 
 // SecKeychain.h
 OSStatus SecKeychainSetUserInteractionAllowed ( Boolean state );
+
+// SecPolicy.h
+SecPolicyRef SecPolicyCreateBasicX509(void);
+SecPolicyRef SecPolicyCreateSSL(Boolean server, CFStringRef hostname);
+
 
 // SecTransform.h
 SecTransformRef SecSignTransformCreate( SecKeyRef key, CFErrorRef *error ) ;

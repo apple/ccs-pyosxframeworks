@@ -18,5 +18,6 @@ all = [
     "_corefoundation_cffi",
     "_opendirectory_cffi",
     "_security_cffi",
+    "_security_cms_cffi",
     "_utils_cffi",
 ]

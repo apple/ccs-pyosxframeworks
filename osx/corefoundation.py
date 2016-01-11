@@ -254,7 +254,7 @@ class CFDataRef(CFObjectRef):
 
     def count(self):
         """
-        The number of items in the wrapped CFArrayRef.
+        The length of the data in the CFDataRef.
 
         @return: the count
         @rtype: L{int}

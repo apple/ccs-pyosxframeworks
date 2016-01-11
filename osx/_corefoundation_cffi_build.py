@@ -23,6 +23,7 @@ modules = [import_module(".frameworks.{}".format(module), "osx") for module in (
     "_corefoundation_cffi",
     "_opendirectory_cffi",
     "_security_cffi",
+    "_security_cms_cffi",
     "_utils_cffi",
 )]
 
