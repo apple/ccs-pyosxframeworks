@@ -408,6 +408,7 @@ OSStatus SecItemCopyMatching ( CFDictionaryRef query, CFTypeRef *result );
 CFTypeID SecKeyGetTypeID(void);
 
 // SecKeychain.h
+OSStatus SecKeychainCopyDefault ( SecKeychainRef *keychain );
 OSStatus SecKeychainSetUserInteractionAllowed ( Boolean state );
 
 // SecPolicy.h
