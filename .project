@@ -3,6 +3,7 @@
 	<name>osxframeworks</name>
 	<comment></comment>
 	<projects>
+		<project>CalendarServer-Develop-1</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
