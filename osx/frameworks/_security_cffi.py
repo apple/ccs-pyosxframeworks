@@ -439,6 +439,11 @@ SSLSetProtocolVersionMax  (SSLContextRef      context,
 OSStatus SSLSetConnection (SSLContextRef context, SSLConnectionRef connection);
 OSStatus SSLGetConnection (SSLContextRef context, SSLConnectionRef *connection);
 
+OSStatus
+SSLSetPeerDomainName        (SSLContextRef        context,
+                             const char            *peerName,
+                             size_t                peerNameLen);
+
 OSStatus SSLSetCertificate ( SSLContextRef context, CFArrayRef certRefs );
 
 OSStatus SSLSetIOFuncs ( SSLContextRef context, SSLReadFunc readFunc, SSLWriteFunc writeFunc );
