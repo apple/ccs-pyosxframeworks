@@ -23,6 +23,7 @@ import unittest
 CFStringRef tests.
 """
 
+
 class CFStringRefTestCase(unittest.TestCase):
     """
     Tests for L{CFStringRef}.
@@ -36,7 +37,6 @@ class CFStringRefTestCase(unittest.TestCase):
         str = CFStringRef.fromString("abc")
         self.assertEqual(str.instanceTypeId(), CFStringRef.typeId())
 
-
     def test_description(self):
         """
         Make sure L{CFStringRef.description} is the correct string.
@@ -44,7 +44,6 @@ class CFStringRefTestCase(unittest.TestCase):
 
         str = CFStringRef.fromString("abc")
         self.assertTrue("CFString" in str.description())
-
 
     def test_retain(self):
         """
@@ -71,7 +70,6 @@ class CFStringRefTestCase(unittest.TestCase):
         gc.collect()
         self.assertEqual(str4.retainCount(), 1)
 
-
     def test_to_from_string(self):
         """
         Make sure L{CFStringRef.fromString} and L{CFStringRef.toString} work properly.
@@ -79,7 +77,6 @@ class CFStringRefTestCase(unittest.TestCase):
 
         str = CFStringRef.fromString("abc")
         self.assertEqual(str.toString(), "abc")
-
 
     def test_copy(self):
         """

@@ -23,6 +23,7 @@ import unittest
 OpenDirectory tests.
 """
 
+
 class OpenDirectoryTestCase(unittest.TestCase):
     """
     Tests for OpenDirectory cffi wrappers.
@@ -36,7 +37,6 @@ class OpenDirectoryTestCase(unittest.TestCase):
         session = ODSession.defaultSession()
         self.assertTrue(session is not None)
 
-
     def test_nodeNames(self):
         """
         Make sure L{ODSession.nodeNames} returns a set of nodes.
@@ -46,7 +46,6 @@ class OpenDirectoryTestCase(unittest.TestCase):
         names = session.nodeNames()
         self.assertTrue(isinstance(names, list))
         self.assertTrue("/Search" in names)
-
 
     def test_node(self):
         """
@@ -58,7 +57,6 @@ class OpenDirectoryTestCase(unittest.TestCase):
         self.assertTrue(node is not None)
         self.assertTrue(isinstance(node.details(["dsAttrTypeStandard:RecordType", ]), dict))
 
-
     def test_record(self):
         """
         Make sure L{ODRecord} returns a valid node.
@@ -69,7 +67,6 @@ class OpenDirectoryTestCase(unittest.TestCase):
         record = node.record("dsRecTypeStandard:Users", "_www")
         self.assertTrue(isinstance(record, ODRecord))
         self.assertTrue(isinstance(record.details(["dsAttrTypeStandard:RecordType", ]), dict))
-
 
     def test_query(self):
         """

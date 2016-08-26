@@ -23,6 +23,7 @@ import tempfile
 CFDataRef tests.
 """
 
+
 class CFDataRefTestCase(unittest.TestCase):
     """
     Tests for L{CFDataRef}.
@@ -36,7 +37,6 @@ class CFDataRefTestCase(unittest.TestCase):
         data = CFDataRef.fromString("abc")
         self.assertEqual(data.instanceTypeId(), CFDataRef.typeId())
 
-
     def test_description(self):
         """
         Make sure L{CFDataRef.description} is the correct string.
@@ -44,7 +44,6 @@ class CFDataRefTestCase(unittest.TestCase):
 
         data = CFDataRef.fromString("abc")
         self.assertTrue("CFData" in data.description())
-
 
     def test_to_from_string(self):
         """
@@ -54,7 +53,6 @@ class CFDataRefTestCase(unittest.TestCase):
         data = CFDataRef.fromString("abc")
         self.assertEqual(data.toString(), "abc")
 
-
     def test_count(self):
         """
         Make sure L{CFDataRef.count} returns correct length.
@@ -62,7 +60,6 @@ class CFDataRefTestCase(unittest.TestCase):
 
         data = CFDataRef.fromString("abc")
         self.assertEqual(data.count(), 3)
-
 
     def test_binary(self):
         """

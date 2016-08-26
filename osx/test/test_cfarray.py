@@ -23,6 +23,7 @@ import unittest
 CFArrayRef tests.
 """
 
+
 class CFArrayRefTestCase(unittest.TestCase):
     """
     Tests for L{CFArrayRef}.
@@ -36,7 +37,6 @@ class CFArrayRefTestCase(unittest.TestCase):
         array = CFArrayRef.fromList((CFStringRef.fromString("abc"), CFStringRef.fromString("def"),))
         self.assertEqual(array.instanceTypeId(), CFArrayRef.typeId())
 
-
     def test_description(self):
         """
         Make sure L{CFArrayRef.description} is the correct string.
@@ -44,7 +44,6 @@ class CFArrayRefTestCase(unittest.TestCase):
 
         array = CFArrayRef.fromList((CFStringRef.fromString("abc"), CFStringRef.fromString("def"),))
         self.assertTrue("CFArray" in array.description(), msg=array.description())
-
 
     def test_retain(self):
         """
@@ -60,7 +59,6 @@ class CFArrayRefTestCase(unittest.TestCase):
         gc.collect()
         self.assertEqual(array2.retainCount(), 1)
 
-
     def test_to_from_list(self):
         """
         Make sure L{CFArrayRef.fromString} and L{CFArrayRef.toString} work properly.
@@ -69,7 +67,6 @@ class CFArrayRefTestCase(unittest.TestCase):
         array = CFArrayRef.fromList((CFStringRef.fromString("abc"), CFStringRef.fromString("def"),))
         self.assertEqual(array.toList(), ["abc", "def", ])
 
-
     def test_count(self):
         """
         Make sure L{CFArrayRef.count} returns the right number.
@@ -77,7 +74,6 @@ class CFArrayRefTestCase(unittest.TestCase):
 
         array = CFArrayRef.fromList((CFStringRef.fromString("abc"), CFStringRef.fromString("def"),))
         self.assertEqual(array.count(), 2)
-
 
     def test_valueAt(self):
         """

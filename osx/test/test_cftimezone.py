@@ -22,6 +22,7 @@ import unittest
 CFTimeZoneRef tests.
 """
 
+
 class CFTimeZoneRefTestCase(unittest.TestCase):
     """
     Tests for L{CFTimeZoneRef}.
@@ -34,7 +35,6 @@ class CFTimeZoneRefTestCase(unittest.TestCase):
 
         tz = CFTimeZoneRef.defaultTimeZone()
         self.assertEqual(tz.instanceTypeId(), CFTimeZoneRef.typeId())
-
 
     def test_name(self):
         """

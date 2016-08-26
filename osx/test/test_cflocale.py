@@ -22,6 +22,7 @@ import unittest
 CFLocaleRef tests.
 """
 
+
 class CFLocaleRefTestCase(unittest.TestCase):
     """
     Tests for L{CFLocaleRef}.
@@ -34,7 +35,6 @@ class CFLocaleRefTestCase(unittest.TestCase):
 
         locale = CFLocaleRef.currentLocale()
         self.assertEqual(locale.instanceTypeId(), CFLocaleRef.typeId())
-
 
     def test_preferredLanguages(self):
         """

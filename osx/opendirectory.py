@@ -29,7 +29,6 @@ class ODError(Exception):
     """
 
 
-
 class ODSession(CFObjectRef):
     """
     Wraps a cffi/ODSession object.
@@ -48,7 +47,6 @@ class ODSession(CFObjectRef):
                 raise ODError("Unable to create ODSession: {}".format(error.error()))
         super(ODSession, self).__init__(session)
 
-
     @classmethod
     def defaultSession(cls):
         """
@@ -58,7 +56,6 @@ class ODSession(CFObjectRef):
         @rtype: L{ODSession}
         """
         return cls(session=od.kODSessionDefault)
-
 
     def nodeNames(self):
         """
@@ -76,7 +73,6 @@ class ODSession(CFObjectRef):
 
         nodes = CFArrayRef(nodes)
         return nodes.toList()
-
 
 
 class ODNode(CFObjectRef):
@@ -101,7 +97,6 @@ class ODNode(CFObjectRef):
             raise ODError("Unable to create ODNode: {} {}".format(nodename, error.error()))
         super(ODNode, self).__init__(node)
 
-
     def setCredentials(self, recordType, user, pswd):
         """
         Authentication to this ODNode.
@@ -123,7 +118,6 @@ class ODNode(CFObjectRef):
 
         return od.ODNodeSetCredentials(self.ref(), recordType.ref(), user, pswd, ffi.NULL)
 
-
     def details(self, keys):
         """
         Return the node attributes as an L{dict}.
@@ -144,7 +138,6 @@ class ODNode(CFObjectRef):
         details = CFDictionaryRef(details)
         return details.toDict()
 
-
     def record(self, recordType, recordName):
         """
         Get a record of the specified type with the specified record name.
@@ -162,7 +155,6 @@ class ODNode(CFObjectRef):
         recordName = CFStringRef.fromString(recordName)
         record = od.ODNodeCopyRecord(self.ref(), recordType.ref(), recordName.ref(), ffi.NULL, ffi.NULL)
         return ODRecord(record) if record != ffi.NULL else None
-
 
 
 class ODRecord(CFObjectRef):
@@ -190,7 +182,6 @@ class ODRecord(CFObjectRef):
         details = CFDictionaryRef(details)
         return details.toDict()
 
-
     def verifyPassword(self, password):
         """
         Verify the password associated with this record.
@@ -204,7 +195,6 @@ class ODRecord(CFObjectRef):
 
         password = CFStringRef.fromString(password)
         return od.ODRecordVerifyPassword(self.ref(), password.ref(), ffi.NULL)
-
 
     def verifyPasswordExtended(self, authType, authItems):
         """
@@ -222,7 +212,6 @@ class ODRecord(CFObjectRef):
         authType = CFStringRef.fromString(authType)
         authItems = CFArrayRef.fromList([CFStringRef.fromString(item) for item in authItems])
         return od.ODRecordVerifyPasswordExtended(self.ref(), authType.ref(), authItems.ref(), ffi.NULL, ffi.NULL, ffi.NULL)
-
 
 
 class ODQuery(CFObjectRef):
@@ -267,7 +256,6 @@ class ODQuery(CFObjectRef):
             error = CFErrorRef(error[0])
             raise ODError("Unable to create query: {}".format(error.error()))
         return ODQuery(query)
-
 
     def results(self, allowPartial=False):
         """

@@ -32,15 +32,15 @@ def get_ext_modules():
     return [_corefoundation_cffi_build.ffi.distutils_extension()]
 
 
-
 class LazyBuild(build):
+
     def finalize_options(self):
         self.distribution.ext_modules = get_ext_modules()
         build.finalize_options(self)
 
 
-
 class LazyInstall(install):
+
     def finalize_options(self):
         self.distribution.ext_modules = get_ext_modules()
         install.finalize_options(self)

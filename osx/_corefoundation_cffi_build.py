@@ -46,7 +46,6 @@ for m in modules:
     ffi.cdef(m.TYPES + m.CONSTANTS + m.FUNCTIONS)
 
 
-
 def main():
     ffi.compile()
 

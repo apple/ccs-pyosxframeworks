@@ -31,7 +31,6 @@ class CFTimeZoneRef(CFObjectRef):
     def typeId():
         return cf.CFTimeZoneGetTypeID()
 
-
     @classmethod
     def defaultTimeZone(cls):
         cftzref = cf.CFTimeZoneCopyDefault()
@@ -39,17 +38,14 @@ class CFTimeZoneRef(CFObjectRef):
             raise CFError("Unable to create a CFTimeZoneRef")
         return CFTimeZoneRef(cftzref)
 
-
     @classmethod
     def defaultTimeZoneName(cls):
         tz = cls.defaultTimeZone()
         return tz.name()
 
-
     def name(self):
         cfstr = CFStringRef(cf.CFTimeZoneGetName(self.ref()), owned=False)
         return cfstr.toString()
-
 
 
 class CFLocaleRef(CFObjectRef):
@@ -61,14 +57,12 @@ class CFLocaleRef(CFObjectRef):
     def typeId():
         return cf.CFLocaleGetTypeID()
 
-
     @classmethod
     def currentLocale(cls):
         localeref = cf.CFLocaleCopyCurrent()
         if localeref == ffi.NULL:
             raise CFError("Unable to create a CFLocaleRef")
         return CFLocaleRef(localeref)
-
 
     @classmethod
     def preferredLanguages(cls):
@@ -77,7 +71,6 @@ class CFLocaleRef(CFObjectRef):
             raise CFError("Unable to get CFLocale preferred languages")
         items = CFArrayRef(items)
         return items.toList()
-
 
 
 class CFPropertyListRef(CFObjectRef):
@@ -89,7 +82,6 @@ class CFPropertyListRef(CFObjectRef):
     def typeId():
         # CFPropertyListRef is actually one of CFStringRef, CFArrayRef or CFDictionaryRef
         return None
-
 
     @classmethod
     def createFromData(cls, data):

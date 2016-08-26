@@ -22,6 +22,7 @@ import unittest
 CFDictionaryRef tests.
 """
 
+
 class CFDictionaryRefTestCase(unittest.TestCase):
     """
     Tests for L{CFDictionaryRef}.
@@ -38,7 +39,6 @@ class CFDictionaryRefTestCase(unittest.TestCase):
         })
         self.assertEqual(cfdict.instanceTypeId(), CFDictionaryRef.typeId())
 
-
     def test_description(self):
         """
         Make sure L{CFDictionaryRef.description} is the correct string.
@@ -50,7 +50,6 @@ class CFDictionaryRefTestCase(unittest.TestCase):
         })
         self.assertTrue("dict" in cfdict.description(), msg=cfdict.description())
 
-
     def test_to_from_dict(self):
         """
         Make sure L{CFDictionaryRef.fromDict} and L{CFDictionaryRef.toDict} work properly.
@@ -61,7 +60,6 @@ class CFDictionaryRefTestCase(unittest.TestCase):
             CFStringRef.fromString("def"): CFStringRef.fromString("2"),
         })
         self.assertEqual(cfdict.toDict(), {"abc": "1", "def": "2", })
-
 
     def test_count(self):
         """

@@ -27,7 +27,6 @@ class CFError(Exception):
     """
 
 
-
 class CFObjectRef(object):
     """
     This is a wrapper for any CF objects returned from CFFI calls. For CF
@@ -56,11 +55,9 @@ class CFObjectRef(object):
         if not owned and cfobj is not None:
             cf.CFRetain(self.cfobj)
 
-
     @classmethod
     def fromRef(cls, cfobj):
         return cls(cfobj, False)
-
 
     def __del__(self):
         """
@@ -72,23 +69,18 @@ class CFObjectRef(object):
         self.cfobj = None
         self.cf = None
 
-
     def ref(self):
         return self.cfobj
-
 
     def retainCount(self):
         return cf.CFGetRetainCount(self.ref())
 
-
     def instanceTypeId(self):
         return cf.CFGetTypeID(self.ref())
-
 
     def description(self):
         description = CFStringRef(cf.CFCopyDescription(self.ref()))
         return description.toString()
-
 
     def native(self):
         """
@@ -110,7 +102,6 @@ class CFObjectRef(object):
         return result
 
 
-
 class CFErrorRef(CFObjectRef):
     """
     A wrapper for CFErrorRef CoreFoundation objects.
@@ -119,7 +110,6 @@ class CFErrorRef(CFObjectRef):
     @staticmethod
     def typeId():
         return cf.CFErrorGetTypeID()
-
 
     def code(self):
         """
@@ -130,7 +120,6 @@ class CFErrorRef(CFObjectRef):
         """
         code = cf.CFErrorGetCode(self.ref())
         return code
-
 
     def description(self):
         """
@@ -143,7 +132,6 @@ class CFErrorRef(CFObjectRef):
         return desc.toString()
 
 
-
 class CFBooleanRef(CFObjectRef):
     """
     A wrapper for CFBooleanRef CoreFoundation objects.
@@ -153,11 +141,9 @@ class CFBooleanRef(CFObjectRef):
     def typeId():
         return cf.CFBooleanGetTypeID()
 
-
     @classmethod
     def fromBool(cls, value):
         return cls.fromRef(cf.kCFBooleanTrue if value else cf.kCFBooleanFalse)
-
 
 
 class CFStringRef(CFObjectRef):
@@ -168,7 +154,6 @@ class CFStringRef(CFObjectRef):
     @staticmethod
     def typeId():
         return cf.CFStringGetTypeID()
-
 
     @classmethod
     def fromString(cls, text):
@@ -188,14 +173,11 @@ class CFStringRef(CFObjectRef):
             raise CFError("Unable to create a CFStringRef")
         return CFStringRef(cfstringref)
 
-
     def toString(self):
         return self.native()
 
-
     def __str__(self):
         return self.native()
-
 
     def native(self):
         """
@@ -215,10 +197,8 @@ class CFStringRef(CFObjectRef):
             cf.CFStringGetCString(self.ref(), str, actualSize + 1, cf.kCFStringEncodingUTF8)
         return ffi.string(str) if str else ""
 
-
     def copy(self):
         return CFStringRef(cf.CFStringCreateCopy(ffi.NULL, self.ref()))
-
 
 
 class CFDataRef(CFObjectRef):
@@ -229,7 +209,6 @@ class CFDataRef(CFObjectRef):
     @staticmethod
     def typeId():
         return cf.CFDataGetTypeID()
-
 
     @classmethod
     def fromString(cls, text):
@@ -247,10 +226,8 @@ class CFDataRef(CFObjectRef):
             raise CFError("Unable to create a CFDataRef")
         return CFDataRef(cfdataref)
 
-
     def toString(self):
         return self.native()
-
 
     def count(self):
         """
@@ -260,7 +237,6 @@ class CFDataRef(CFObjectRef):
         @rtype: L{int}
         """
         return cf.CFDataGetLength(self.ref())
-
 
     def native(self):
         """
@@ -275,7 +251,6 @@ class CFDataRef(CFObjectRef):
         return bytes(ffi.buffer(value, count))
 
 
-
 class CFArrayRef(CFObjectRef):
     """
     A wrapper for CFArrayRef CoreFoundation objects.
@@ -284,7 +259,6 @@ class CFArrayRef(CFObjectRef):
     @staticmethod
     def typeId():
         return cf.CFArrayGetTypeID()
-
 
     @classmethod
     def fromList(cls, l):
@@ -303,10 +277,8 @@ class CFArrayRef(CFObjectRef):
             raise CFError("Unable to create a CFArrayRef")
         return CFArrayRef(cfarrayref)
 
-
     def toList(self):
         return self.native()
-
 
     def count(self):
         """
@@ -316,7 +288,6 @@ class CFArrayRef(CFObjectRef):
         @rtype: L{int}
         """
         return cf.CFArrayGetCount(self.ref())
-
 
     def valueAtIndex(self, index):
         """
@@ -335,7 +306,6 @@ class CFArrayRef(CFObjectRef):
         else:
             return None
 
-
     def native(self):
         """
         Convert a CFArrayRef into an L{list} of native items.
@@ -350,7 +320,6 @@ class CFArrayRef(CFObjectRef):
         return [item.native() for item in items]
 
 
-
 class CFDictionaryRef(CFObjectRef):
     """
     A wrapper for CFDictionaryRef CoreFoundation objects.
@@ -359,7 +328,6 @@ class CFDictionaryRef(CFObjectRef):
     @staticmethod
     def typeId():
         return cf.CFDictionaryGetTypeID()
-
 
     @classmethod
     def fromDict(cls, d):
@@ -386,10 +354,8 @@ class CFDictionaryRef(CFObjectRef):
             raise CFError("Unable to create a CFDictionaryRef")
         return CFDictionaryRef(cfdictref)
 
-
     def toDict(self):
         return self.native()
-
 
     def count(self):
         """
@@ -399,7 +365,6 @@ class CFDictionaryRef(CFObjectRef):
         @rtype: L{int}
         """
         return cf.CFDictionaryGetCount(self.ref())
-
 
     def native(self):
         """

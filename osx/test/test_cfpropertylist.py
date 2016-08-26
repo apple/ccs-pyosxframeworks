@@ -23,6 +23,7 @@ import unittest
 CFPropertyListRef tests.
 """
 
+
 class CFPropertyListRefTestCase(unittest.TestCase):
     """
     Tests for L{CFPropertyListRef}.
@@ -43,7 +44,6 @@ class CFPropertyListRefTestCase(unittest.TestCase):
         plist = CFPropertyListRef.createFromData(dataref)
         self.assertEqual(plist.instanceTypeId(), CFStringRef.typeId())
         self.assertEqual(plist.toString(), "Hello World!")
-
 
     def test_readArrayData(self):
         """
@@ -67,7 +67,6 @@ class CFPropertyListRefTestCase(unittest.TestCase):
         self.assertEqual(len(items), 2)
         self.assertEqual(items[0], "Hello World!")
         self.assertEqual(items[1], "Salve Mundi!")
-
 
     def test_readDictionaryData(self):
         """
@@ -94,7 +93,6 @@ class CFPropertyListRefTestCase(unittest.TestCase):
         self.assertEqual(items["English"], "Hello World!")
         self.assertEqual(items["Latin"], "Salve Mundi!")
 
-
     dataDir = os.path.join(os.path.dirname(__file__), "data")
 
     def test_readDictionaryXMLFile(self):
@@ -111,7 +109,6 @@ class CFPropertyListRefTestCase(unittest.TestCase):
         self.assertEqual(len(items), 2)
         self.assertEqual(items["English"], "Hello World!")
         self.assertEqual(items["Latin"], "Salve Mundi!")
-
 
     def test_readDictionaryBinaryFile(self):
         """
